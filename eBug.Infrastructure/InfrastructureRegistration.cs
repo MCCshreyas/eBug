@@ -1,8 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
 
-public static class InfrastructureRegistration
+namespace eBug.Infrastructure
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static class InfrastructureRegistration
     {
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        {
+            return services;
+        }
     }
 }

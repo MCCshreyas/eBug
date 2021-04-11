@@ -1,11 +1,17 @@
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using eBug.Application.Abstractions.Persistence;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
-public static class ApplicationRegistration
+namespace eBug.Application
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static class ApplicationRegistration
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        return services;
+        public static IServiceCollection AddApplication(this IServiceCollection services)
+        {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            return services;
+        }
     }
 }
