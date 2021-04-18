@@ -29,7 +29,7 @@ namespace eBug.Persistence.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<IReadOnlyList<T>> ListAllAsync()
+        public virtual async Task<List<T>> ListAllAsync()
         {
             return await _context.Set<T>().AsNoTracking().ToListAsync();
         }

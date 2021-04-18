@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eBug.Application.Abstractions.Persistence;
@@ -10,19 +11,28 @@ namespace eBug.Application.Features.Bugs.Commands.CreateBug
     public class CreateBugCommandHandler : IRequestHandler<CreateBugCommand, int>
     {
         private readonly IMapper _mapper;
-        private readonly IBugRepository _bugRepository;
+        private readonly IAsyncRepository<Bug> _bugRepository;
 
-        public CreateBugCommandHandler(IMapper mapper, IBugRepository bugRepository)
+        public CreateBugCommandHandler(IMapper mapper, IAsyncRepository<Bug> bugRepository)
         {
             _mapper = mapper;
             _bugRepository = bugRepository;
         }
         
-        public Task<int> Handle(CreateBugCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateBugCommand request, CancellationToken cancellationToken)
         {
-            var bug = _mapper.Map<Bug>(request);
-            _bugRepository.AddAsync(bug);
-            return Task.FromResult(bug.Id);
+            var bug = new Bug
+            {
+                Title = request.Title,
+                Description = request.Description,
+                RaisedDate = DateTime.Now,
+                CurrentStatus = BugStatus.Active,
+                ProjectId = 1,
+                UserId = 1
+            };
+            
+            await _bugRepository.AddAsync(bug);
+            return bug.Id;
         }
     }
 }

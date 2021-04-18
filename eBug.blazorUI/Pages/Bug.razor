@@ -1,0 +1,41 @@
+﻿@page "/bug"
+@inject BugService _bugService;
+
+<h3>Bug</h3>
+
+@if (bugs == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var bug in bugs)
+        {
+            <tr>
+                <td>@bug.Id</td>
+                <td>@bug.Title</td>
+                <td>@bug.Description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<BugModel> bugs = new List<BugModel>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        bugs = await _bugService.GetAllBugs();
+    }
+}

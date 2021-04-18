@@ -22,7 +22,7 @@ namespace eBug.Application.Features.Bugs.Queries.GetAllBugs
         public async Task<List<GetAllBugsResponse>> Handle(GetAllBugsQuery request, CancellationToken cancellationToken)
         {
             var bugs = await _bugsRepository.ListAllAsync();
-            return _mapper.Map<List<GetAllBugsResponse>>(bugs);
+            return _mapper.Map<List<Bug>, List<GetAllBugsResponse>>(bugs);
         }
     }
 }

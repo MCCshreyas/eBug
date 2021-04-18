@@ -3,7 +3,7 @@ using MediatR;
 
 namespace eBug.Application.Features.Bugs.Queries.GetAllBugs
 {
-    public class GetAllBugsQuery : IRequest<List<GetAllBugsResponse>>
+    public record GetAllBugsQuery : IRequest<List<GetAllBugsResponse>>
     {
     }
 }

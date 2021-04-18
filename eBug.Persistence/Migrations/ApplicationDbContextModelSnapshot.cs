@@ -35,8 +35,9 @@ namespace eBug.Persistence.Migrations
                     b.Property<int>("CurrentStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("Description")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -50,11 +51,12 @@ namespace eBug.Persistence.Migrations
                     b.Property<DateTime>("RaisedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ResolvedDate")
+                    b.Property<DateTime?>("ResolvedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Title")
-                        .HasColumnType("int");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -87,8 +89,8 @@ namespace eBug.Persistence.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

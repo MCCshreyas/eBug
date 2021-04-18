@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using eBug.Domain.Common;
@@ -16,6 +17,11 @@ namespace eBug.Persistence
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
@@ -23,17 +29,13 @@ namespace eBug.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        /*
-                        entry.Entity.CreatedBy = _currentUserService.UserId;
-                        entry.Entity.Created = _dateTime.Now;
-                        */
+                        entry.Entity.CreatedBy = "Test";
+                        entry.Entity.CreatedDate = DateTime.Now;
                         break;
 
                     case EntityState.Modified:
-                        /*
-                        entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                        entry.Entity.LastModified = _dateTime.Now;
-                        */
+                        entry.Entity.LastModifiedBy = "Test2";
+                        entry.Entity.LastModifiedDate = DateTime.Now;
                         break;
                 }
             }
