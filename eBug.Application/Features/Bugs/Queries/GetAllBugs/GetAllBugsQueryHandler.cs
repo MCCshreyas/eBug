@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eBug.Application.Abstractions.Persistence;
+using eBug.Application.Contracts.Bugs;
 using eBug.Domain.Entities;
 using MediatR;
 
@@ -19,9 +20,9 @@ namespace eBug.Application.Features.Bugs.Queries.GetAllBugs
             _mapper = mapper;
         }
         
-        public async Task<List<GetAllBugsResponse>> Handle(GetAllBugsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetAllBugsResponse>> Handle(GetAllBugsQuery request, CancellationToken token)
         {
-            var bugs = await _bugsRepository.ListAllAsync();
+            var bugs = await _bugsRepository.ListAllAsync(token);
             return _mapper.Map<List<Bug>, List<GetAllBugsResponse>>(bugs);
         }
     }

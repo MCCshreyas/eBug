@@ -1,41 +1,12 @@
-﻿@page "/bug"
-@inject BugService _bugService;
+﻿@using eBug.Application.Contracts.Bugs
+<tr>
+    <td>@BugRecord.Id</td>
+    <td>@BugRecord.Title</td>
+    <td>@BugRecord.Description</td>
+</tr>
 
-<h3>Bug</h3>
-
-@if (bugs == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var bug in bugs)
-        {
-            <tr>
-                <td>@bug.Id</td>
-                <td>@bug.Title</td>
-                <td>@bug.Description</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
 
 @code {
-
-    private List<BugModel> bugs = new List<BugModel>();
-    
-    protected override async Task OnInitializedAsync()
-    {
-        bugs = await _bugService.GetAllBugs();
-    }
+    [Parameter]
+    public GetAllBugsResponse BugRecord { get; set; }
 }

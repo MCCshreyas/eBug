@@ -1,7 +1,7 @@
 ﻿using System;
 using eBug.Domain.Entities;
 
-namespace eBug.Application.Features.Bugs.Queries.GetAllBugs
+namespace eBug.Application.Contracts.Bugs
 {
     public record GetAllBugsResponse
     {

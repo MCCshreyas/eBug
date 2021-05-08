@@ -1,0 +1,52 @@
+﻿@page "/bug"
+@using eBug.Application.Contracts.Bugs
+@inject BugService _bugService;
+
+<h3>Bug</h3>
+
+<EditForm Model="command" OnValidSubmit="CreateBugHandler">
+    <InputText @bind-Value="command.Title" DisplayName="Bug title"/>
+    <InputText @bind-Value="command.Description" DisplayName="Bug description"/>
+    <input type="submit" value="Create bug" />
+</EditForm>
+
+@if (bugs == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var bug in bugs)
+        {
+            <Bug BugRecord="@bug"  />
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<GetAllBugsResponse> bugs = new List<GetAllBugsResponse>();
+    private CreateBugCommand command = new CreateBugCommand();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        bugs = await _bugService.GetAllBugs();
+    }
+
+    public async Task CreateBugHandler()
+    {
+        await _bugService.CreateBug(command);
+        command = new CreateBugCommand();
+        await OnInitializedAsync();
+    }
+}

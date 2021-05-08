@@ -1,10 +1,11 @@
-using System.Reflection;
+using eBug.Api.Filters;
 using eBug.Application;
 using eBug.Infrastructure;
 using eBug.Persistence;
-using MediatR;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +15,7 @@ namespace eBug.Api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
         
         public Startup(IConfiguration configuration)
         {
@@ -23,13 +24,30 @@ namespace eBug.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-//            services.AddMediatR(Assembly.GetExecutingAssembly());
-
             services.AddApplication();
             services.AddInfrastructure();
             services.AddPersistence(Configuration);
 
-            services.AddControllers();
+            services.AddCors(option =>
+            {
+                option.AddPolicy("AnyOriginAnyMethod",builder =>
+                {
+                    builder.WithOrigins(Configuration["UIEndpoint"])
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
+            services.AddControllers(option =>
+            {
+                option.Filters.Add(new ApiExceptionFilterAttribute());
+            }).AddFluentValidation();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "eBug.Api", Version = "v1"}); });
         }
 
@@ -43,8 +61,8 @@ namespace eBug.Api
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
+            app.UseCors("AnyOriginAnyMethod");
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

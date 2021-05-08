@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eBug.Application.Contracts.Bugs;
 using eBug.Application.Features.Bugs.Commands.CreateBug;
 using eBug.Application.Features.Bugs.Queries.GetAllBugs;
 using eBug.Application.Features.Projects.Queries.GetAllProjects;

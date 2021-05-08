@@ -20,9 +20,9 @@ namespace eBug.Application.Features.Projects.Queries.GetAllProjects
         }
 
         public async Task<List<GetAllProjectResponse>> Handle(GetAllProjectQuery request,
-            CancellationToken cancellationToken)
+            CancellationToken token)
         {
-            var projects = await _projectRepository.ListAllAsync();
+            var projects = await _projectRepository.ListAllAsync(token);
             return _mapper.Map<List<GetAllProjectResponse>>(projects);
         }
     }

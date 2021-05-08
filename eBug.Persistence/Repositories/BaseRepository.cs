@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using eBug.Application.Abstractions.Persistence;
-using eBug.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace eBug.Persistence.Repositories
 {
-    public class BugRepository : BaseRepository<Bug>, IBugRepository
-    {
-        public BugRepository(ApplicationDbContext context) : base(context)
-        {
-        }
-    }
-    
     public class BaseRepository<T> : IAsyncRepository<T> where T : class
     {
         private readonly ApplicationDbContext _context;
@@ -24,40 +16,40 @@ namespace eBug.Persistence.Repositories
             _context = context;
         }
         
-        public virtual async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(int id, CancellationToken token)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return await _context.Set<T>().FindAsync(new object[]{ id }, cancellationToken: token);
         }
 
-        public virtual async Task<List<T>> ListAllAsync()
+        public virtual async Task<List<T>> ListAllAsync(CancellationToken token)
         {
-            return await _context.Set<T>().AsNoTracking().ToListAsync();
+            return await _context.Set<T>().AsNoTracking().ToListAsync(cancellationToken: token);
         }
 
-        public virtual async Task<T> AddAsync(T entity)
+        public virtual async Task<T> AddAsync(T entity, CancellationToken token)
         {
-             await _context.Set<T>().AddAsync(entity);
-             await _context.SaveChangesAsync();
+             await _context.Set<T>().AddAsync(entity, token);
+             await _context.SaveChangesAsync(token);
              return entity;
         }
 
-        public virtual async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity, CancellationToken token)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
         }
 
-        public virtual async Task DeleteAsync(T entity)
+        public virtual async Task DeleteAsync(T entity, CancellationToken token)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();        
+            await _context.SaveChangesAsync(token);        
         }
 
-        public virtual async Task<IReadOnlyList<T>> GetPagedResponseAsync(int page, int size)
+        public virtual async Task<IReadOnlyList<T>> GetPagedResponseAsync(int page, int size, CancellationToken token)
         {
             return await _context.Set<T>().Skip((page - 1) * size).Take(size)
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync(token);
         }
     }
 }

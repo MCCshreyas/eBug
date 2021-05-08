@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBug.Api", "eBug.Api\eBug.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBug.blazorUI", "eBug.blazorUI\eBug.blazorUI.csproj", "{98F58EDC-BBA7-4A29-8BED-A1E3BC064973}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBug.Application.Contracts", "eBug.Application.Contracts\eBug.Application.Contracts.csproj", "{A5EEFCDE-C7EC-47E7-A233-5CEA6304F392}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,7 @@ Global
 		{428FFE06-6940-4776-9CA5-670AB6392439} = {35F64617-EF56-48DD-A21C-27687085E51F}
 		{ADF0FB3A-2677-4602-AF49-2574A8106583} = {2DB442CD-D18E-4E98-8E1C-8D6760E4B6A0}
 		{98F58EDC-BBA7-4A29-8BED-A1E3BC064973} = {516F35E7-3C51-4DE3-B991-068F0144A3C0}
+		{A5EEFCDE-C7EC-47E7-A233-5CEA6304F392} = {2979AF73-BE6D-4540-9A1D-32DBC52C24CB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{481DD345-3B2A-47BA-83E1-71E8B0D2D27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -64,5 +67,9 @@ Global
 		{98F58EDC-BBA7-4A29-8BED-A1E3BC064973}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98F58EDC-BBA7-4A29-8BED-A1E3BC064973}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98F58EDC-BBA7-4A29-8BED-A1E3BC064973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5EEFCDE-C7EC-47E7-A233-5CEA6304F392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5EEFCDE-C7EC-47E7-A233-5CEA6304F392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5EEFCDE-C7EC-47E7-A233-5CEA6304F392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5EEFCDE-C7EC-47E7-A233-5CEA6304F392}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

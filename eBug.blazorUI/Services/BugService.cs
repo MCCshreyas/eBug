@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using eBug.Application.Contracts.Bugs;
 using eBug.blazorUI.ViewModels;
 
 namespace eBug.blazorUI.Services
@@ -16,13 +16,16 @@ namespace eBug.blazorUI.Services
             _httpClient = httpClient;
         }
 
-        public Task<List<BugModel>> GetAllBugs()
+        public async Task<List<GetAllBugsResponse>> GetAllBugs()
         {
-            return Task.FromResult(new List<BugModel>()
-            {
-                new() { Id = 1, Title = "First bug", Description = "First description"},
-                new() { Id = 2, Title = "Second bug", Description = "Second description"},
-            });
+            var bugsResult = await _httpClient.GetFromJsonAsync<List<GetAllBugsResponse>>("/api/bug");
+            return bugsResult;
+        }
+
+        public async Task CreateBug(CreateBugCommand bug)
+        {
+            var result = await _httpClient.PostAsJsonAsync("/api/bug", bug);
+            result.EnsureSuccessStatusCode();
         }
     }
 }

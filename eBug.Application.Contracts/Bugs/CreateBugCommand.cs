@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace eBug.Application.Features.Bugs.Commands.CreateBug
+namespace eBug.Application.Contracts.Bugs
 {
     public class CreateBugCommand : IRequest<int>
     {
