@@ -1,3 +1,5 @@
+using eBug.Application.Abstractions.Persistence;
+using eBug.Infrastructure.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eBug.Infrastructure
@@ -6,6 +8,7 @@ namespace eBug.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.AddScoped<IIdentityService, IdentityService>();
             return services;
         }
     }

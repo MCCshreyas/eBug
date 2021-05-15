@@ -63,6 +63,7 @@ namespace eBug.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("AnyOriginAnyMethod");
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

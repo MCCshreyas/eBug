@@ -4,10 +4,12 @@ using eBug.Application.Contracts.Bugs;
 using eBug.Application.Features.Bugs.Commands.ChangeBugStatus;
 using eBug.Application.Features.Bugs.Commands.DeleteBug;
 using eBug.Application.Features.Bugs.Queries.GetAllBugs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eBug.Api.Controllers
 {
+    [Authorize]
     public class BugController : BaseController
     {
         [HttpGet]
