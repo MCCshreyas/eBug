@@ -10,7 +10,7 @@ using MediatR;
 
 namespace eBug.Application.Features.Bugs.Commands.CreateBug
 {
-    public class CreateBugCommandHandler : IRequestHandler<CreateBugCommand, int>
+    public class CreateBugCommandHandler : IRequestHandler<CreateBugCommand, Guid>
     {
         private readonly IAsyncRepository<Bug> _bugRepository;
 
@@ -18,19 +18,11 @@ namespace eBug.Application.Features.Bugs.Commands.CreateBug
         {
             _bugRepository = bugRepository;
         }
-        
-        public async Task<int> Handle(CreateBugCommand request, CancellationToken token)
+
+        public async Task<Guid> Handle(CreateBugCommand request, CancellationToken token)
         {
-            var bug = new Bug
-            {
-                Title = request.Title,
-                Description = request.Description,
-                RaisedDate = DateTime.Now,
-                CurrentStatus = BugStatus.Active,
-                ProjectId = request.ProjectId,
-                UserId = 1
-            };
-            
+            var bug = new Bug(request.Title, request.Description, request.ProjectId);
+
             await _bugRepository.AddAsync(bug, token);
             return bug.Id;
         }

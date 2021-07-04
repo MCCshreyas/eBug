@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using eBug.Application.Abstractions.Persistence;
 using eBug.Domain.Entities;
@@ -15,14 +16,16 @@ namespace eBug.Persistence.Repositories
             _context = context;
         }
 
-        public Task<bool> IsProjectExists(int projectId, CancellationToken token)
+        public async Task<bool> IsProjectExists(Guid projectId, CancellationToken token)
         {
-            return _context.Projects.AnyAsync(x => x.Id == projectId, token);
+            var result = await _context.Projects.AnyAsync(x => x.Id == projectId, token);
+            return !result;
         }
 
-        public Task<bool> UniqueProjectName(string projectName, CancellationToken token)
+        public async Task<bool> UniqueProjectName(string projectName, CancellationToken token)
         {
-            return _context.Projects.AnyAsync(x => x.Name == projectName, token);
+            var result = await _context.Projects.AnyAsync(x => x.Name == projectName, token);
+            return !result;
         }
     }
 }

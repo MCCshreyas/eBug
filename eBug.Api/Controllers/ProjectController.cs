@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using eBug.Application.Features.Projects.Commands.CreateProject;
 using eBug.Application.Features.Projects.Commands.DeleteProject;
 using eBug.Application.Features.Projects.Queries.GetAllProjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eBug.Api.Controllers

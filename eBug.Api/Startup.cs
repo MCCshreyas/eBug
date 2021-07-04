@@ -1,5 +1,7 @@
 using eBug.Api.Filters;
+using eBug.Api.Services;
 using eBug.Application;
+using eBug.Application.Abstractions.Identity;
 using eBug.Infrastructure;
 using eBug.Persistence;
 using FluentValidation.AspNetCore;
@@ -16,7 +18,7 @@ namespace eBug.Api
     public class Startup
     {
         private IConfiguration Configuration { get; }
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,13 +26,19 @@ namespace eBug.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JwtSettings>(Configuration.GetSection(nameof(JwtSettings)));
+            
             services.AddApplication();
             services.AddInfrastructure();
             services.AddPersistence(Configuration);
 
+            services.AddHttpContextAccessor();
+
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
             services.AddCors(option =>
             {
-                option.AddPolicy("AnyOriginAnyMethod",builder =>
+                option.AddPolicy("AnyOriginAnyMethod", builder =>
                 {
                     builder.WithOrigins(Configuration["UIEndpoint"])
                         .AllowAnyMethod()
@@ -38,17 +46,37 @@ namespace eBug.Api
                 });
             });
 
-            services.AddControllers(option =>
-            {
-                option.Filters.Add(new ApiExceptionFilterAttribute());
-            }).AddFluentValidation();
+            services.AddControllers(option => { option.Filters.Add(new ApiExceptionFilterAttribute()); })
+                .AddFluentValidation();
 
-            services.Configure<ApiBehaviorOptions>(options =>
+            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+
+            services.AddSwaggerGen(c =>
             {
-                options.SuppressModelStateInvalidFilter = true;
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "eBug.Api", Version = "v1"});
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    Description = "Please insert JWT token into field."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        System.Array.Empty<string>()
+                    }
+                });
             });
-            
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "eBug.Api", Version = "v1"}); });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -63,8 +91,11 @@ namespace eBug.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("AnyOriginAnyMethod");
+
+
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

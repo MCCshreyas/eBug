@@ -20,7 +20,7 @@ namespace eBug.Application.Features.Bugs.Commands.UpdateBug
                 .MinimumLength(10);
 
             RuleFor(x => x.ProjectId)
-                .MustAsync(projectRepository.IsProjectExists)
+                .MustAsync((projectId, token) => projectRepository.IsProjectExists(projectId, token))
                 .WithMessage("Project does not exists");
         }
     }

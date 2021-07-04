@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using eBug.Application.Abstractions.Persistence;
 using eBug.Domain.Entities;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace eBug.Application.Features.Projects.Commands.CreateProject
 {
-    public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, int>
+    public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, Guid>
     {
         private readonly IAsyncRepository<Project> _projectRepository;
 
@@ -15,13 +16,9 @@ namespace eBug.Application.Features.Projects.Commands.CreateProject
             _projectRepository = projectRepository;
         }
         
-        public async Task<int> Handle(CreateProjectCommand request, CancellationToken token)
+        public async Task<Guid> Handle(CreateProjectCommand request, CancellationToken token)
         {
-            var project = new Project
-            {
-                Name = request.ProjectName
-            };
-
+            var project = new Project(request.ProjectName);
             await _projectRepository.AddAsync(project, token);
             return project.Id;
         }

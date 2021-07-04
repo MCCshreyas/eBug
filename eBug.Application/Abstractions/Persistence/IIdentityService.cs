@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace eBug.Application.Abstractions.Persistence
 {
     public interface IIdentityService
     {
-        Task<string> RegisterUserAsync(string email, string password);
-        Task<string> GetJwtTokenAsync(string email, string password);
+        Task<Guid> RegisterUserAsync(string email, string password);
+        Task<string> SignInAsync(string email, string password);
     }
 }

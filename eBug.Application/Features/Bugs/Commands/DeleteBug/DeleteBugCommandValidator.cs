@@ -10,7 +10,7 @@ namespace eBug.Application.Features.Bugs.Commands.DeleteBug
             RuleFor(x => x.BugId)
                 .NotEmpty()
                 .NotNull()
-                .MustAsync(bugRepository.IsBugExists)
+                .MustAsync(bugRepository.IsBugExistsAsync)
                 .WithMessage("Bug does not exists");
         }
     }

@@ -1,11 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using eBug.Application.Abstractions.Persistence;
 using MediatR;
 
-namespace eBug.Application.Identity.Registration.Commands
+namespace eBug.Application.Identity.Registration.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, string>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
     {
         private readonly IIdentityService _identityService;
 
@@ -14,7 +15,7 @@ namespace eBug.Application.Identity.Registration.Commands
             _identityService = identityService;
         }
         
-        public async Task<string> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var result = await _identityService.RegisterUserAsync(request.Email, request.Password);
             return result;

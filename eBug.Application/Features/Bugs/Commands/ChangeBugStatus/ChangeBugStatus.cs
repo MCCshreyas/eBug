@@ -17,7 +17,7 @@ namespace eBug.Application.Features.Bugs.Commands.ChangeBugStatus
         public async Task<bool> Handle(ChangeBugStatusCommand request, CancellationToken cancellationToken)
         {
             var bug = await _bugRepository.GetByIdAsync(request.BugId, cancellationToken);
-            bug.CurrentStatus = request.NewStatus;
+            bug.ChangeStatus(request.NewStatus);
             await _bugRepository.UpdateAsync(bug, cancellationToken);
             return true;
         }

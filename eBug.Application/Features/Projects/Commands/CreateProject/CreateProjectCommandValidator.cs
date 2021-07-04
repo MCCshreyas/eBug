@@ -11,7 +11,8 @@ namespace eBug.Application.Features.Projects.Commands.CreateProject
                 .NotEmpty()
                 .NotNull()
                 .MinimumLength(5)
-                .MustAsync(projectRepository.UniqueProjectName);
+                .MustAsync(projectRepository.UniqueProjectName)
+                .WithMessage("Project with same name already exists.");
         }
     }
 }

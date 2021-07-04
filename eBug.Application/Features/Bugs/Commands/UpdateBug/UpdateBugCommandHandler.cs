@@ -22,12 +22,11 @@ namespace eBug.Application.Features.Bugs.Commands.UpdateBug
 
             if (oldBug is null)
                 throw new Exception("Bug does not exists");
-            
-            oldBug.Description = request.Description;
-            oldBug.Title = request.Title;
-            oldBug.ProjectId = request.ProjectId;
-            oldBug.CurrentStatus = request.Status;
 
+            oldBug.SetDescription(request.Description);
+            oldBug.MoveToAnotherProject(request.ProjectId);
+            oldBug.ChangeStatus(request.Status);
+            
             await _bugRepository.UpdateAsync(oldBug, token);
             return Unit.Value;
         }

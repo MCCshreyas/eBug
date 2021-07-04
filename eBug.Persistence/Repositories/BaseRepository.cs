@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace eBug.Persistence.Repositories
             _context = context;
         }
         
-        public virtual async Task<T> GetByIdAsync(int id, CancellationToken token)
+        public virtual async Task<T> GetByIdAsync(Guid id, CancellationToken token)
         {
             return await _context.Set<T>().FindAsync(new object[]{ id }, cancellationToken: token);
         }
